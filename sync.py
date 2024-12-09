@@ -1,6 +1,8 @@
 import os
-import requests
 from typing import Dict, List
+
+import requests
+
 from yandex_class import YandexDisk
 from logger import setup_logger
 
@@ -8,6 +10,9 @@ logger = setup_logger(__name__)
 
 
 class SyncFolders:
+    """
+    Класс для синхронизации локальной папки с папкой на Яндекс.Диске
+    """
     def __init__(self, local_folder: str, yandex_folder: str, token: str):
         self.local_folder = local_folder
         self.yandex_folder = yandex_folder
@@ -16,6 +21,11 @@ class SyncFolders:
         self.yandex_disk.check_or_create_yandex_folder()
 
     def get_yandex_folder_content(self, folder_name: str) -> List[Dict[str, str]]:
+        """
+        Получает содержимое указанной папки на Яндекс.Диске
+        :param folder_name: Путь к папке на Яндекс.Диске
+        :return: Список с содержимым папки на Яндекс.Диске
+        """
         try:
             params = {"path": folder_name}
             response = requests.get(self.yandex_disk.base_url, headers=self.yandex_disk.headers, params=params)
@@ -29,6 +39,9 @@ class SyncFolders:
             return []
 
     def sync(self) -> None:
+        """
+        Синхронизирует локальную папку с папкой на Яндекс.Диске
+        """
         try:
             yandex_contents = self.get_yandex_folder_content(self.yandex_folder)
             yandex_files = {item["name"]: item for item in yandex_contents if item["type"] == "file"}

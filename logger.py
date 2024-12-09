@@ -2,6 +2,11 @@ import logging
 
 
 def setup_logger(name: str) -> logging.Logger:
+    """
+    Настраивает логгер с указанным именем
+    :param name: Имя логгера
+    :return: Настроенный объект логгера
+    """
     logger = logging.getLogger(name)
     logger.setLevel(logging.INFO)
 
